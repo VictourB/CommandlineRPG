@@ -91,7 +91,7 @@ class Player(Entity):
     If you wish your soul may try again.
         
         """)
-        if input():                                                             # TODO: Go back to main menu instead of exiting
-            sys.exit()
+        input()                                                             # TODO: Go back to main menu instead of exiting
+        sys.exit()
         
 
