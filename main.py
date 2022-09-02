@@ -116,14 +116,13 @@ def encounter(player, story_beat):
 
             print("What would you like to do?")
             action = input("(A)ttack | (D)efend | (M)oxie | (I)nventory | (S)tatus | (R)un \n\n")
+            effect = ""
             print()
             match action.lower():
                 case "attack":
-                    print("Attacking!")
-                    current_enemy.change_health(-(player.current_atk))
+                    player.attack(current_enemy)
                 case "a":
-                    print("Attacking!")
-                    current_enemy.change_health(-(player.current_atk))
+                    player.attack(current_enemy)
                 case "defend":
                     print("Defending!")
                     player.defend()
@@ -138,10 +137,10 @@ def encounter(player, story_beat):
                     player.use_moxie()
                 case "inventory":
                     print("Opening Inventory!")
-                    player.use_item()
+                    effect = player.use_item(current_enemy)
                 case "i":
                     print("Opening Inventory!")
-                    player.use_item()
+                    effect = player.use_item(current_enemy)
                 case "status":
                     print("Getting Status!")
                     player.describe()
@@ -173,21 +172,31 @@ def encounter(player, story_beat):
                 case _:
                     print("That's not a valid command.")
                     pass
+                
+            if effect:
+                    if effect.lower() == "end":
+                        break
+            
+            current_enemy.attack(player)
+
 
             current_enemy.debuff(turn_number)
+            print("\nEnemy has healed and debuffed")
             player.debuff(turn_number)
+            print("You have healed and debuffed")
             turn_number += 1
+        
+        player.level_up()
+
 
 
 def story(story_beat):
     if story_beat == 0:
         print("""
-        
         This story starts when you awoke one day to find your family killed,
         and a mysterious note detailing a plan to turn the world into robot consumers.
 
         You venture out of the homestead hoping to avenge your family and sabotoge the evil plan to roboticize the world.
-        
         """)
         pass # Easy Enemies
 
@@ -258,6 +267,16 @@ def story(story_beat):
         
         """)
         pass # Difficult Boss
+    if story_beat == 6:
+        print("""
+        
+        You've done it. Although you'll never truly get revenge for what Jason Bleak did to you, at least you were able to stop
+        his diabolical plan.
+
+        You have done the world a great service, and are a true hero.
+        
+        """)
+        pass # End of Game
 
 
 
@@ -279,9 +298,10 @@ def main():
         story(story_beat)
         encounter(player, story_beat)
         story_beat += 1
-        if story_beat >= 6 or player.current_hp <= 0:
+        if story_beat >= 7:
             break
     
-    
+    return main()
+
 main()
 

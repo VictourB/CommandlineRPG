@@ -1,13 +1,13 @@
 spoils_DSC = {
-    "Food" : "Food heals 30 HP.",
-    "Water" : "Water recovers 20 MP.",
-    "Donut" : "this Donut will end any encounter with a cop.",
-    "EMP" : "This device will end any encounter with a machine.",
-    "Smelly Spray" : "This will end any encounter with an animal.",
-    "Blank Check" : "This will end any encounter with people in suits.",
-    "Gun" : "This item will max out your Attack.",
-    "Book" : "Permanent +1 to HP, MP, Attack, and Defense.",
-    "Energy Drink" : "Permanent +1 to Speed and -5 to HP."
+    "food" : "Food heals 30 HP.",
+    "water" : "Water recovers 20 MP.",
+    "donut" : "this Donut will end any encounter with a cop.",
+    "emp" : "This device will end any encounter with a machine.",
+    "smelly spray" : "This will end any encounter with an animal.",
+    "blank check" : "This will end any encounter with people in suits.",
+    "gun" : "This item will max out your Attack.",
+    "book" : "Permanent +1 to HP, MP, Attack, and Defense.",
+    "energy drink" : "Permanent +1 to Speed and -5 to HP."
 }
 
 moxie_moves_DSC = {
@@ -39,7 +39,7 @@ moxie_moves_DSC = {
 # SPEED 0 (immobile) - 10 (quicker than The Flash)
 
 EASY_ENCOUNTERS = {
-    'Tall Grass' : {'HP' : 5, 'MP' : 0, 'ATK' : 1, "DEF" : 1, "SPEED" : 0, "DSC" : "It's just some tall grass that could be easily cut down.", "MM" : "Papercut"},
+    'Tall Grass' : {'HP' : 5, 'MP' : 0, 'ATK' : 1, "DEF" : 0, "SPEED" : 0, "DSC" : "It's just some tall grass that could be easily cut down.", "MM" : "Papercut"},
     'Gross Bug' : {'HP' : 10, 'MP' : 0, 'ATK' : 2, "DEF" : 1, "SPEED" : 1, "DSC" : "Ewww, it's a gross looking bug with lots of legs and a fat head.", "MM" : "Gross Out"  },
     'Large Rat' : {'HP' : 20, 'MP' : 0, 'ATK' : 3, "DEF" : 2, "SPEED" : 2, "DSC" : "WOW! It's one of the biggest rats you've ever seen.", "MM" : "Big Bite"  },
     'Spooky Ghost' : {'HP' : 30, 'MP' : 5, 'ATK' : 5, "DEF" : 5, "SPEED" : 3, "DSC" : "It's a ghost, an actual ghost, you can hardly believe it!", "MM" : "Possession"  },

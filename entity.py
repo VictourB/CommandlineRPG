@@ -28,7 +28,7 @@ class Entity():
     def describe(self):
         print(f"""
         
-        {self.name.capitalize()}
+        {self.name}
         {self.description}
 
         Hit Points: {self.current_hp} / {self.base_hp}
@@ -40,7 +40,6 @@ class Entity():
         """)
     
     def defend(self):
-
         self.current_dfs += int(self.base_dfs)
 
     def use_moxie(self):
@@ -48,22 +47,21 @@ class Entity():
     
     def debuff(self, turn_number):
 
-        
-        if abs(self.current_hp - self.base_hp) < 5:
+        if abs(self.current_hp - self.base_hp) < 1:
             self.current_hp = self.base_hp
         else:
             if self.current_hp > self.base_hp:
-                self.current_hp -= 5
+                self.current_hp -= 1
             elif self.current_hp < self.base_hp:
-                self.current_hp += 5
+                self.current_hp += 1
 
-        if abs(self.current_mp - self.base_mp) < 5:
+        if abs(self.current_mp - self.base_mp) < 1:
             self.current_mp = self.base_mp
         else:
             if self.current_mp > self.base_mp:
-                self.current_mp -= 5
+                self.current_mp -= 1
             elif self.current_mp < self.base_mp:
-                self.current_mp += 5
+                self.current_mp += 1
         
         if self.current_atk > self.base_atk:
             self.current_atk -= 1
@@ -80,13 +78,14 @@ class Entity():
         elif self.current_spd < self.base_spd:
             self.current_spd += 1
     
-
+    def die(self):
+        pass
 
     def change_health(self, health_int):
-        # Take twice as much current damage as base damage
         self.current_hp += health_int 
-        self.current_hp += health_int 
-        self.base_hp += health_int
+        self.base_hp += int(health_int * .2)
+        if self.current_hp <= 0:
+            self.die()
 
 
 
@@ -94,5 +93,12 @@ class Enemy(Entity):
     def __init__(self, name, description, hp, mp, atk, dfs, spd, mm) -> None:
         super().__init__(name, description, hp, mp, atk, dfs, spd)
         self.mm = mm
+
+    def attack(self, player):
+        damage = self.current_atk - player.current_dfs
+        if damage < 0:
+            damage = 0
+        print(f"\n{self.name} attacked {player.name} for {damage}")
+        player.change_health(-(damage))
 
     
