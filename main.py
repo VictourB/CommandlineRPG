@@ -110,18 +110,24 @@ def encounter(player, story_beat):
         enemy_info = encounter_difficulty[round]
 
         current_enemy = entity.Enemy(round, enemy_info['DSC'], enemy_info['HP'], enemy_info['MP'], enemy_info['ATK'], enemy_info['DEF'], enemy_info['SPEED'],enemy_info['MM'])
+        effect = ""
         while current_enemy.current_hp > 0:                                                 # Turn Loop While Enemy Alive
             turn_number = 0        
             current_enemy.describe()
 
             print("What would you like to do?")
             action = input("(A)ttack | (D)efend | (M)oxie | (I)nventory | (S)tatus | (R)un \n\n")
-            effect = ""
             print()
             match action.lower():
                 case "attack":
+                    if effect == "2x":
+                        player.attack(current_enemy)
+                        effect = None
                     player.attack(current_enemy)
                 case "a":
+                    if effect == "2x":
+                        player.attack(current_enemy)
+                        effect = None
                     player.attack(current_enemy)
                 case "defend":
                     print("Defending!")
@@ -130,11 +136,17 @@ def encounter(player, story_beat):
                     print("Defending!")
                     player.defend()
                 case "moxie":
-                    print("Using Moxie!")
-                    player.use_moxie()
+                    if player.current_mp >= 5:
+                        print("Using Moxie!")
+                        effect = player.use_moxie()
+                    else:
+                        print("Not Enough Moxie")
                 case "m":
-                    print("Using Moxie!")
-                    player.use_moxie()
+                    if player.current_mp >= 5:
+                        print("Using Moxie!")
+                        effect = player.use_moxie()
+                    else:
+                        print("Not Enough Moxie")
                 case "inventory":
                     print("Opening Inventory!")
                     effect = player.use_item(current_enemy)
@@ -153,10 +165,10 @@ def encounter(player, story_beat):
                     chance_to_escape_and_heal = (player.current_spd * 2) / 100
                     roll = random.random()
                     if roll <= chance_to_escape_and_heal:
-                        print(f"you got {roll} and was able to escape and heal a bit")
+                        print(f"you were able to escape and heal a bit")
                         break
                     elif roll <= chance_to_escape:
-                        print(f"you got {roll} and was able to escape")
+                        print(f"you were able to escape")
                         break
                 case "r":
                     print("Attempting to Run!")
@@ -164,10 +176,10 @@ def encounter(player, story_beat):
                     chance_to_escape_and_heal = (player.current_spd * 2) / 100
                     roll = random.random()
                     if roll <= chance_to_escape_and_heal:
-                        print(f"you got {roll} and was able to escape and heal a bit")
+                        print(f"you were able to escape and heal a bit")
                         break
                     elif roll <= chance_to_escape:
-                        print(f"you got {roll} and was able to escape")
+                        print(f"you were able to escape")
                         break
                 case _:
                     print("That's not a valid command.")
@@ -177,7 +189,7 @@ def encounter(player, story_beat):
                     if effect.lower() == "end":
                         break
             
-            current_enemy.attack(player)
+            enemy_turn(current_enemy, player, effect)
 
 
             current_enemy.debuff(turn_number)
@@ -186,8 +198,23 @@ def encounter(player, story_beat):
             print("You have healed and debuffed")
             turn_number += 1
         
+        print()
         player.level_up()
+        print()
+        player.mm.update({current_enemy.current_mm:settings.moxie_moves_DSC[current_enemy.current_mm]})
+        print(f"You have learned: {current_enemy.current_mm}")
+        print(player.mm[current_enemy.current_mm])
 
+def enemy_turn(enemy, player, effect):
+    enemy_effect = None
+    if enemy.current_mp >= 5 and enemy_effect is None:
+        enemy_effect = enemy.use_moxie()
+        return
+    else:
+        if enemy_effect == "x2":
+            enemy.attack(player)
+            enemy_effect = None
+        enemy.attack(player)
 
 
 def story(story_beat):

@@ -1,4 +1,6 @@
 
+import settings
+
 class Entity():
     def __init__(self, name,description,hp,mp,atk,dfs,spd) -> None:
 
@@ -22,8 +24,8 @@ class Entity():
 
         self.inv = {}
 
-        self.mm = []
-        self.currrent_mm = ""
+        self.mm = settings.moxie_moves_DSC
+        self.current_mm = ""
     
     def describe(self):
         print(f"""
@@ -43,7 +45,65 @@ class Entity():
         self.current_dfs += int(self.base_dfs)
 
     def use_moxie(self):
-        pass
+        effect = None
+
+        if self.current_mm == "Papercut":            # The next attack will hit twice.
+            effect = "2x"
+        elif self.current_mm == "Gross Out":         # Grossed out people can't use items at all!
+            pass
+        elif self.current_mm == "Big Bite":          # This attack will slow the opponent to a standstill for two turns.
+            pass
+        elif self.current_mm == "Possession":        # The opponent's Moxie Points will degrade by 5 every turn.
+            pass
+        elif self.current_mm == "Rabies":            # The opponent's Health Points will degrade by 5 every turn.
+            pass
+        elif self.current_mm == "Beatdown":          # The opponent will takes 10 points of damage and lose their next turn
+            pass
+        elif self.current_mm == "Liquid Rage":       # This will raise Attack by 5 points.
+            pass
+        elif self.current_mm == "Lord's Protection": # This will raise Defense by 5 points.
+            pass
+        elif self.current_mm == "Deadly Weapon":     # This move will max out Speed for three turns.
+            pass
+        elif self.current_mm == "Mind Games":        # Reduces opponent's Defense to 0
+            pass
+        elif self.current_mm == "Corperate Ladder":  # A literal ladder that will hit for 3x the amount of damage.
+            pass
+        elif self.current_mm == "Deafening Roar":    # Summons an ally to help in the fight.
+            pass
+        elif self.current_mm == "Done Deed":         # Reduces HP to 10, Reduces opponents Defense, Speed and MP to 0
+            pass
+        elif self.current_mm == "Unlimited Funding": # Heal 10 HP every turn.        
+            pass
+        elif self.current_mm == "Electric Sheep":    # A bomb fashioned after a sheep, explodes for 5x damage but has a 25% chance of being a dud
+            pass
+        elif self.current_mm == "Obelisk":           # Raises Attack, Defense and Speed by 2. Raises MP and HP by 10.
+            pass
+        elif self.current_mm == "Abduction":         # The opponent loses their next 2 turns and MP is reduced to 0
+            pass
+        elif self.current_mm == "Polarized Hull":    # This move will max out every stat except MP.
+            pass
+        else:
+            print("That is not a valid command")
+            return self.use_moxie()
+
+
+        print(f"\n{self.name} Used: {self.current_mm}")
+        print(self.mm[self.current_mm])
+
+        self.current_mp -= 5
+        return effect
+
+
+
+
+
+
+
+
+
+
+        
     
     def debuff(self, turn_number):
 
@@ -92,7 +152,7 @@ class Entity():
 class Enemy(Entity):
     def __init__(self, name, description, hp, mp, atk, dfs, spd, mm) -> None:
         super().__init__(name, description, hp, mp, atk, dfs, spd)
-        self.mm = mm
+        self.current_mm = mm
 
     def attack(self, player):
         damage = self.current_atk - player.current_dfs
